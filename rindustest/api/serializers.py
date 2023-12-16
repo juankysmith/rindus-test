@@ -3,13 +3,21 @@ from rest_framework import serializers
 from api.models import Post, Comment
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+
+class CommentsListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f"Comment {value.pk}: {value.name}"
+        
+class PostSerializer(serializers.ModelSerializer):
+    comments = CommentsListingField(many=True, read_only=True)
+
     class Meta:
         model = Post
-        fields = ['user_id', 'title', 'body']
+        fields = ['title', 'body', 'comments']
+            
 
-
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['name', 'email', 'body']
+        fields = ['post_id', 'name', 'email', 'body']
+        

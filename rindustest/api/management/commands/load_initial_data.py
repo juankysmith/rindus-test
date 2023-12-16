@@ -1,4 +1,5 @@
-from django.db import IntegrityError
+from django.db import IntegrityError, connection, transaction
+from django.core.management.color import no_style
 from django.core.management.base import BaseCommand, CommandError
 from requests import get
 
@@ -9,10 +10,12 @@ from api.models import Comment, Post
 class Command(BaseCommand):
     help = "Load Comments and Posts from jsonplaceholder."
     
+    @transaction.atomic
     def handle(self, *args, **options):
         try:
             posts_dict = self._load_posts()
             self._load_comments(posts_dict)
+            self._update_sequence()
         except CommandError:
             print("Command load_intial_data failed.")
             raise
@@ -60,3 +63,10 @@ class Command(BaseCommand):
                 )
             except IntegrityError:
                 print(f'Comments already loaded in local database.')
+
+    def _update_sequence(self):
+        """Updates the sequences used for PK generation to skip integration errors"""
+        sequence_sql = connection.ops.sequence_reset_sql(no_style(), [Post, Comment])
+        with connection.cursor() as cursor:
+            for sql in sequence_sql:
+                cursor.execute(sql)
