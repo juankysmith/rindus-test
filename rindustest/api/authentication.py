@@ -1,7 +1,9 @@
 from rest_framework import authentication
 
+
 class BearerAuthentication(authentication.TokenAuthentication):
-    keyword = ['token','bearer']
+    keyword = ["token", "bearer"]
+
     def authenticate(self, request):
         auth = authentication.get_authorization_header(request).split()
         if not auth:
@@ -11,9 +13,13 @@ class BearerAuthentication(authentication.TokenAuthentication):
             return
 
         if len(auth) == 1:
-            raise authentication.exceptions.AuthenticationFailed("No credentials provided.")
+            raise authentication.exceptions.AuthenticationFailed(
+                "No credentials provided."
+            )
         elif len(auth) > 2:
-            raise authentication.exceptions.AuthenticationFailed("Token string should not contain spaces.")
+            raise authentication.exceptions.AuthenticationFailed(
+                "Token string should not contain spaces."
+            )
 
         try:
             token = auth[1].decode()

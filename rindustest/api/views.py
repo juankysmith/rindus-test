@@ -1,4 +1,3 @@
-
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
@@ -11,9 +10,10 @@ class PostViewSet(ModelViewSet):
     """
     API endpoint that allows posts to be viewed or edited.
     """
+
     queryset = Post.objects.all().order_by("id")
     serializer_class = PostSerializer
-    authentication_classes=[BearerAuthentication]
+    authentication_classes = [BearerAuthentication]
     permission_classes = [IsAuthenticated]
 
 
@@ -21,7 +21,8 @@ class CommentViewSet(ModelViewSet):
     """
     API endpoint that allows comments to be viewed or edited.
     """
+
     queryset = Comment.objects.all().order_by("id")
     serializer_class = CommentSerializer
-    authentication_classes=[BearerAuthentication]
+    authentication_classes = [BearerAuthentication]
     permission_classes = [IsAuthenticated]
