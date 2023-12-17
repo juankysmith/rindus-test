@@ -34,9 +34,10 @@ class Command(BaseCommand):
                             for element in response.json()
                     ]
                 )
-                posts_dict = {post.id : post for post in posts}
+                posts_dict = {post.pk : post for post in posts}
             except IntegrityError:
                 print(f'Posts already loaded in local database.')
+                raise
 
         return posts_dict
 
@@ -49,7 +50,7 @@ class Command(BaseCommand):
         if response.status_code == 200:
             try:
                 if not posts_dict:
-                    posts_dict = {post.id : post for post in Post.objects.all()}
+                    posts_dict = {post.pk : post for post in Post.objects.all()}
                 Comment.objects.bulk_create(
                     [
                         Comment(
@@ -63,6 +64,7 @@ class Command(BaseCommand):
                 )
             except IntegrityError:
                 print(f'Comments already loaded in local database.')
+                raise
 
     def _update_sequence(self):
         """Updates the sequences used for PK generation to skip integration errors"""

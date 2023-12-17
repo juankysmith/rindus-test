@@ -76,6 +76,9 @@ DATABASES = {
             "service": "rindus_service",
             "passfile": ".pgpass",
         },
+        'TEST': {
+            'NAME': 'rindustest',
+        },
     }
 }
 
