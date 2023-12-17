@@ -13,7 +13,10 @@ def forward(apps, schema_editor):
 
 def backward(apps, schema_editor):
     Post.objects.filter(id__lte=100).delete()
-    User.objects.get(username="rindus").delete()
+    try:
+        User.objects.get(username="rindus").delete()
+    except User.DoesNotExist:
+        pass
 
 
 class Migration(migrations.Migration):
