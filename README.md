@@ -6,6 +6,11 @@ Clone code from Github, navigate to project root and execute command:
 
 Alternatively, you can run command 'docker-compose up' (wich is what make command does).
 
+A database called rindusdb will be used:
+
+    psql -h localhost -U postgres
+    create database rindusdb;
+
 After this, two containers have been created and started:
 
 ![Alt text](containers.png)
