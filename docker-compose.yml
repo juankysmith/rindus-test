@@ -1,24 +1,19 @@
-version: '3.8'
+version: '3.11'
 
 services:
   app:
-    build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
+    image: app
+    build: .
     env_file:
-        - .env
+      - .env
 
     volumes:
       - ../..:/workspaces:cached
 
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
-
-    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
-
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
+    command: sh -c "python rindustest/manage.py migrate &&
+                    python rindustest/manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
 
   db:
     image: postgres:latest
@@ -27,9 +22,6 @@ services:
       - postgres-data:/var/lib/postgresql/data
     env_file:
         - .env
-
-    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
 
 volumes:
   postgres-data:

@@ -13,18 +13,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ""
+SECRET_KEY = "django-insecure-5ag&-(-5#+%=&l5@#e7h&e5(-tth@s4)603_jw$rlnto3nv&ow"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "api",
     "rest_framework",
     "rest_framework.authtoken",
     "django.contrib.admin",
@@ -33,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -72,10 +72,11 @@ WSGI_APPLICATION = "rindustest.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "service": "rindus_service",
-            "passfile": ".pgpass",
-        },
+        "NAME": "rindusdb",
+        "USER": "juanky",
+        "PASSWORD": "juanky",
+        "HOST": "db",
+        "PORT": "5432",
         "TEST": {
             "NAME": "rindustest",
         },

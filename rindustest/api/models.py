@@ -41,10 +41,3 @@ class Comment(models.Model):
     def __str__(self):
         return f"Comment {self.pk}: {self.name}"
 
-
-@receiver(post_save, sender=get_user_model())
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    from rest_framework.authtoken.models import Token
-
-    if created:
-        Token.objects.create(user=instance)
