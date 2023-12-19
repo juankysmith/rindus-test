@@ -7,10 +7,10 @@ class BearerAuthentication(authentication.TokenAuthentication):
     def authenticate(self, request):
         auth = authentication.get_authorization_header(request).split()
         if not auth:
-            return
+            return None
 
         if auth[0].lower().decode() not in self.keyword:
-            return
+            return None
 
         if len(auth) == 1:
             raise authentication.exceptions.AuthenticationFailed(
